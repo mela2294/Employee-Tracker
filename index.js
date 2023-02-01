@@ -18,37 +18,28 @@ var employee_tracker = function () {
         if (answers.prompt === 'View All Department') {
             db.query(`SELECT * FROM department`, (err, result) => {
                 if (err) throw err;
-                console.log('Viewing All Departments: ');
+                console.log("Viewing All Departments: ");
                 console.table(result);
                 employee_tracker();
             });
         } else if (answers.prompt === 'View All Roles') {
             db.query(`SELECT * FROM role`, (err, result) => {
                 if (err) throw err;
-                console.log('Viewing All Roles: ');
+                console.log("Viewing All Roles: ");
                 console.table(result);
                 employee_tracker();
             });
         } else if (answers.prompt === 'View All Employees') {
             db.query(`SELECT * FROM employee`, (err, result) => {
                 if (err) throw err;
-                console.log('Viewing All Employees: ');
+                console.log("Viewing All Employees: ");
                 console.table(result);
                 employee_tracker();
             });
-        } else if (answers.prompt === 'Add Department') {
+        } else if (answers.prompt === 'Add A Department') {
             inquirer.prompt([{
-                type: 'input',
                 name: 'department',
                 message: 'What is the name of the department?',
-                validate: departmentInput => {
-                    if (departmentInput) {
-                        return true;
-                    } else {
-                        console.log('Add Department');
-                        return false;
-                    }
-                }
             }]).then((answers) => {
                 db.query(`INSERT INTO department (name) VALUES (?)`, [answers.department], (err, result) => {
                     if (err) throw err;
@@ -56,39 +47,20 @@ var employee_tracker = function () {
                     employee_tracker();
                 });
             })
-        } else if (answers.prompt === 'Add Role') {
+        } else if (answers.prompt === 'Add A Role') {
             db.query(`SELECT * FROM department`, (err, result) => {
                 if (err) throw err;
 
                 inquirer.prompt([
                     {
-                        type: 'input',
                         name: 'role',
                         message: 'What is the name of the role?',
-                        validate: roleInput => {
-                            if (roleInput) {
-                                return true;
-                            } else {
-                                console.log('Add Role');
-                                return false;
-                            }
-                        }
                     },
                     {
-                        type: 'input',
                         name: 'salary',
                         message: 'What is the salary of the role?',
-                        validate: salaryInput => {
-                            if (salaryInput) {
-                                return true;
-                            } else {
-                                console.log('Add Salary!');
-                                return false;
-                            }
-                        }
                     },
                     {
-                        type: 'list',
                         name: 'department',
                         message: 'Which department does the role belong to?',
                         choices: () => {
@@ -113,39 +85,20 @@ var employee_tracker = function () {
                     });
                 })
             });
-        } else if (answers.prompt === 'Add Employee') {
+        } else if (answers.prompt === 'Add An Employee') {
             db.query(`SELECT * FROM employee, role`, (err, result) => {
                 if (err) throw err;
 
                 inquirer.prompt([
                     {
-                        type: 'input',
                         name: 'firstName',
                         message: 'What is the employees first name?',
-                        validate: firstNameInput => {
-                            if (firstNameInput) {
-                                return true;
-                            } else {
-                                console.log('Add First Name');
-                                return false;
-                            }
-                        }
                     },
                     {
-                        type: 'input',
                         name: 'lastName',
                         message: 'What is the employees last name?',
-                        validate: lastNameInput => {
-                            if (lastNameInput) {
-                                return true;
-                            } else {
-                                console.log('Add Last Name');
-                                return false;
-                            }
-                        }
                     },
                     {
-                        type: 'list',
                         name: 'role',
                         message: 'What is the employees role?',
                         choices: () => {
@@ -158,17 +111,8 @@ var employee_tracker = function () {
                         }
                     },
                     {
-                        type: 'input',
                         name: 'manager',
                         message: 'Who is the employees manager?',
-                        validate: managerInput => {
-                            if (managerInput) {
-                                return true;
-                            } else {
-                                console.log('Add Manager');
-                                return false;
-                            }
-                        }
                     }
                 ]).then((answers) => {
                     for (var i = 0; i < result.length; i++) {
@@ -184,13 +128,12 @@ var employee_tracker = function () {
                     });
                 })
             });
-        } else if (answers.prompt === 'Update Employee Role') {
+        } else if (answers.prompt === 'Update An Employee Role') {
             db.query(`SELECT * FROM employee, role`, (err, result) => {
                 if (err) throw err;
 
                 inquirer.prompt([
                     {
-                        type: 'list',
                         name: 'employee',
                         message: 'Which employees role do you want to update?',
                         choices: () => {
@@ -230,13 +173,13 @@ var employee_tracker = function () {
 
                     db.query(`UPDATE employee SET ? WHERE ?`, [{role_id: role}, {last_name: name}], (err, result) => {
                         if (err) throw err;
+                        console.log(result)
                         console.log(`Updated ${answers.employee} role to the database.`)
                         employee_tracker();
                     });
                 })
             });
         } else if (answers.prompt === 'Exit') {
-            db.end();
             console.log('Bye!');
         }
     })
