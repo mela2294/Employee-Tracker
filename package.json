@@ -18,6 +18,7 @@
     "clone": "^1.0.4",
     "color-convert": "^2.0.1",
     "color-name": "^1.1.4",
+    "console.table": "^0.10.0",
     "defaults": "^1.0.4",
     "dotenv": "^16.0.3",
     "emoji-regex": "^8.0.0",
@@ -60,7 +61,8 @@
     "wrap-ansi": "^7.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index"
   },
   "repository": {
     "type": "git",
